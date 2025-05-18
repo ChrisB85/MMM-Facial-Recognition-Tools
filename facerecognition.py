@@ -30,7 +30,7 @@ preview = True
 camera = config.get_camera(preview)
 
 print('Loading training data...')
-model.load("training.xml")
+model.read("training.xml")
 print('Training data loaded!')
 
 
