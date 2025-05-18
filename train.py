@@ -35,8 +35,23 @@ print("Which algorithm do you want to use?")
 print("[1] LBPHF (recommended)")
 print("[2] Fisherfaces")
 print("[3] Eigenfaces")
+print("[q] Quit")
 
-algorithm_choice = int(eval(input("--> ")))
+while True:
+    choice = input("--> ").strip().lower()
+    if choice == 'q':
+        print("Exiting...")
+        exit(0)
+    try:
+        algorithm_choice = int(choice)
+        if algorithm_choice not in [1, 2, 3]:
+            print("Please enter a number between 1 and 3, or 'q' to quit")
+            continue
+        break
+    except ValueError:
+        print("Please enter a valid number between 1 and 3, or 'q' to quit")
+        continue
+
 print('')
 
 
