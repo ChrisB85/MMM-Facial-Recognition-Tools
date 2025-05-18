@@ -34,7 +34,7 @@ model.read("training.xml")
 print('Training data loaded!')
 
 
-def clean_shutdown(signum, frame):
+def clean_shutdown(signum=None, frame=None):
     """Release camera and close windows
     """
     camera.stop()
