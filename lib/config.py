@@ -109,11 +109,7 @@ def is_cv2():
 
 
 def is_cv3():
-    if CV_MAJOR_VER == '3':
-        return True
-    else:
-        exit()
-        return False
+    return int(CV_MAJOR_VER) >= 3
 
 
 def model(algorithm, thresh):
@@ -122,11 +118,11 @@ def model(algorithm, thresh):
     if is_cv3():
         # OpenCV version renamed the face module
         if algorithm == 1:
-            model = cv2.face.createLBPHFaceRecognizer(threshold=thresh)
+            model = cv2.face.LBPHFaceRecognizer_create(threshold=thresh)
         elif algorithm == 2:
-            model = cv2.face.createFisherFaceRecognizer(threshold=thresh)
+            model = cv2.face.FisherFaceRecognizer_create(threshold=thresh)
         elif algorithm == 3:
-            model = cv2.face.createEigenFaceRecognizer(threshold=thresh)
+            model = cv2.face.EigenFaceRecognizer_create(threshold=thresh)
         else:
             print("WARNING: face algorithm must be in the range 1-3")
             os._exit(1)
