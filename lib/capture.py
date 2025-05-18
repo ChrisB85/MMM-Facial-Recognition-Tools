@@ -7,7 +7,7 @@ Based on work by Tony DiCola (Copyright 2013) (MIT License)
 
 Run this script to capture positive images for training the face recognizer.
 """
-from __future__ import division
+
 # need to run `pip install future` for builtins (python 2 & 3 compatibility)
 from   builtins import input
 
@@ -23,7 +23,7 @@ from . import face
 
 
 def is_letter_input(letter):
-    input_char = input()
+    input_char = eval(input())
     return input_char.lower()
 
 
@@ -53,7 +53,10 @@ def capture(preview):
     print('Press Ctrl-C to quit.')
     while True:
         try:
-            input()
+#            eval(input())
+            # czekaj na wciśnięcie enter, ale nie evaluuj pustego stringa
+            _ = input()
+
             print('Capturing image...')
             image = camera.read()
             # Convert image to grayscale.
@@ -61,10 +64,10 @@ def capture(preview):
             # Get coordinates of single face in captured image.
             result = face.detect_single(image)
             if result is None:
-                print('Could not detect single face!'
+                print(('Could not detect single face!'
                       + ' Check the image in capture.pgm'
                       + ' to see what was captured and try'
-                      + ' again with only one face visible.')
+                      + ' again with only one face visible.'))
                 continue
             x, y, w, h = result
             # Crop image as close as possible to desired face aspect ratio.
@@ -75,7 +78,7 @@ def capture(preview):
                                     CAPTURE_DIR,
                                     '%03d.pgm' % count)
             cv2.imwrite(filename, crop)
-            print('Found face and wrote training image', filename)
+            print(('Found face and wrote training image', filename))
             count += 1
         except KeyboardInterrupt:
             camera.stop()
@@ -96,10 +99,10 @@ def convert():
         count = int(files[-1][-7:-4]) + 1
     for filename in walk_files(RAW_DIR, '*'):
         if not re.match('.+\.(jpg|jpeg)$', filename, re.IGNORECASE):
-            print("file {0} does not have the correct file extention."
-                  .format(filename))
+            print(("file {0} does not have the correct file extention."
+                  .format(filename)))
             continue
-        print("processing {0}".format(filename))
+        print(("processing {0}".format(filename)))
         image = cv2.imread(filename)
         height, width, channels = image.shape
         image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
@@ -110,16 +113,16 @@ def convert():
             if (height + width > 800):
                 # it's a big image resize it and try again
                 mult = 0.5
-                print('Resizing from ({0},{1}) -> ({2},{3})'
+                print(('Resizing from ({0},{1}) -> ({2},{3})'
                       .format(height, width,
-                              int(mult*height), int(mult*width)))
+                              int(mult*height), int(mult*width))))
                 image2 = cv2.resize(image, None, fx=mult, fy=mult)
                 result = face.detect_single(image2)
                 if result is None:
                     mult = 0.25
-                    print('Resizing from ({0},{1}) -> ({2},{3})'
+                    print(('Resizing from ({0},{1}) -> ({2},{3})'
                           .format(height, width,
-                                  int(mult*height), int(mult*width)))
+                                  int(mult*height), int(mult*width))))
                     image2 = cv2.resize(image, None, fx=mult, fy=mult)
                     result = face.detect_single(image2)
                 if result is not None:
@@ -136,5 +139,5 @@ def convert():
         filename = os.path.join(config.TRAINING_DIR,
                                 CAPTURE_DIR, '%03d.pgm' % count)
         cv2.imwrite(filename, crop)
-        print('Found face and wrote training image', filename)
+        print(('Found face and wrote training image', filename))
         count += 1

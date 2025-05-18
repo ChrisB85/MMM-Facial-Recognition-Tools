@@ -65,7 +65,7 @@ while True:
                 print("Bad face object None")
                 continue
             if len(faces[i]) != 4:
-                print("Bad face object {0}".format(faces[i]))
+                print(("Bad face object {0}".format(faces[i])))
                 continue
             x, y, w, h = faces[i]
             # x and y coordinates of the face

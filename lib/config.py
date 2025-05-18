@@ -12,7 +12,7 @@ import os
 import platform
 import cv2
 
-(CV_MAJOR_VER, CV_MINOR_VER, mv1, mv2) = cv2.__version__.split(".")
+(CV_MAJOR_VER, CV_MINOR_VER) = cv2.__version__.split(".")[:2]
 
 _platform = platform.system().lower()
 path_to_file = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -60,10 +60,10 @@ else:
 # face recognition box.
 if ('FACE_ALGORITHM' in os.environ):
     set_recognition_algorithm(int(os.environ['FACE_ALGORITHM']))
-    print("Using FACE_ALGORITM: {0}".format(RECOGNITION_ALGORITHM))
+    print(("Using FACE_ALGORITM: {0}".format(RECOGNITION_ALGORITHM)))
 else:
     set_recognition_algorithm(1)
-    print("Using default FACE_ALGORITM: {0}".format(RECOGNITION_ALGORITHM))
+    print(("Using default FACE_ALGORITM: {0}".format(RECOGNITION_ALGORITHM)))
 
 
 # File to save and load face recognizer model.
@@ -91,14 +91,14 @@ HAAR_MIN_SIZE_EYES = (20, 20)
 
 
 def get_camera(preview=True):
-    try:
-        from . import picam
-        capture = picam.OpenCVCapture(preview)
-        capture.start()
-        return capture
-    except Exception:
-        from . import webcam
-        return webcam.OpenCVCapture(device_id=0)
+    #try:
+    #    from . import picam
+    #    capture = picam.OpenCVCapture(preview)
+    #    capture.start()
+    #    return capture
+    #except Exception:
+    from . import webcam
+    return webcam.OpenCVCapture(device_id=0)
 
 
 def is_cv2():
@@ -109,9 +109,10 @@ def is_cv2():
 
 
 def is_cv3():
-    if CV_MAJOR_VER == 3:
+    if CV_MAJOR_VER == '3':
         return True
     else:
+        exit()
         return False
 
 
@@ -149,3 +150,4 @@ def user_label(i):
     if i < 0 or i > len(users):
         return "User" + str(int(i))
     return users[i]
+
